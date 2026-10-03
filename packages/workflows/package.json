@@ -1,0 +1,9 @@
+{
+  "name": "@aios/workflows",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { "./hvac": "./dist/hvac.js" },
+  "scripts": { "build": "tsc -b" },
+  "dependencies": { "@aios/core": "0.1.0" }
+}

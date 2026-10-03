@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.next/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+*.log
+demo/recordings/e2e-results/
+demo/recordings/playwright-report/
+!demo/recordings/killer-demo.trace.zip

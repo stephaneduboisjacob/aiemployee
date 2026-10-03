@@ -1,0 +1,8 @@
+{
+  "name": "@aios/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { "./policy": "./dist/policy.js", "./employees": "./dist/employees.js", "./types": "./dist/types.js", "./hvac": "./dist/hvac.js" },
+  "scripts": { "build": "tsc -b" }
+}

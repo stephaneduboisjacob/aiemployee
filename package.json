@@ -1,0 +1,36 @@
+{
+  "name": "ai-employee-os",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "concurrently -k -n api,worker,voice,web -c blue,magenta,cyan,green \"npm run dev --workspace @aios/api\" \"npm run dev --workspace @aios/worker\" \"npm run dev --workspace @aios/voice\" \"npm run dev --workspace @aios/web\"",
+    "build": "tsc -b && npm run build --workspace @aios/web",
+    "typecheck": "tsc -b && npm run typecheck --workspace @aios/web",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "eval": "npm run eval --workspace @aios/evals",
+    "db:migrate": "node-pg-migrate up -m db/migrations",
+    "db:seed": "tsx scripts/seed-demo.ts",
+    "demo": "bash demo/run.sh",
+    "demo:fresh": "bash demo/fresh.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^24.7.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^10.12.0",
+    "@eslint/js": "^10.0.1",
+    "node-pg-migrate": "^9.0.0",
+    "@playwright/test": "^1.63.0",
+    "tsx": "^4.20.6",
+    "typescript-eslint": "^8.71.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

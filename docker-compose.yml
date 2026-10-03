@@ -1,0 +1,143 @@
+name: ai-employee-os
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg18-trixie
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local_postgres_only
+      POSTGRES_DB: aiemployee
+    ports: ["127.0.0.1:${AIOS_POSTGRES_PORT:-15433}:5432"]
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d aiemployee"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:8.2-alpine
+    command: ["redis-server", "--appendonly", "yes", "--save", "60", "1000"]
+    ports: ["127.0.0.1:${AIOS_REDIS_PORT:-16380}:6379"]
+    volumes: ["redis-data:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 2s
+      retries: 20
+
+  temporal:
+    image: temporalio/temporal:1.9.1
+    command: ["server", "start-dev", "--ip", "0.0.0.0", "--db-filename", "/tmp/temporal.db"]
+    ports: ["127.0.0.1:${AIOS_TEMPORAL_PORT:-17233}:7233", "127.0.0.1:${AIOS_TEMPORAL_UI_PORT:-18233}:8233"]
+
+  object-store-init:
+    image: busybox:1.37
+    user: "0:0"
+    command: ["sh", "-c", "chown -R 10001:10001 /data"]
+    volumes: ["minio-data:/data"]
+
+  minio:
+    # MinIO's public community image is no longer available on the host registry; this is an S3-compatible local fallback.
+    image: rustfs/rustfs:1.0.0
+    security_opt: ["no-new-privileges:true"]
+    environment:
+      RUSTFS_VOLUMES: /data
+      RUSTFS_ADDRESS: 0.0.0.0:9000
+      RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
+      RUSTFS_CONSOLE_ENABLE: "true"
+      RUSTFS_ACCESS_KEY: aios
+      RUSTFS_SECRET_KEY: local_minio_dev_only
+      RUSTFS_OBS_LOGGER_LEVEL: info
+    ports: ["127.0.0.1:${AIOS_OBJECT_PORT:-19000}:9000", "127.0.0.1:${AIOS_OBJECT_UI_PORT:-19001}:9001"]
+    volumes: ["minio-data:/data"]
+    depends_on:
+      object-store-init: { condition: service_completed_successfully }
+
+  mailpit:
+    image: axllent/mailpit:v1.27.8
+    ports: ["127.0.0.1:${AIOS_SMTP_PORT:-11025}:1025", "127.0.0.1:${AIOS_MAILPIT_UI_PORT:-18025}:8025"]
+
+  api:
+    image: aios-api:local
+    build: .
+    working_dir: /workspace
+    command: ["sh", "-lc", "DATABASE_URL=postgres://postgres:local_postgres_only@postgres:5432/aiemployee npm run db:migrate && npm run db:seed && npm run dev --workspace @aios/api"]
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      DATABASE_URL: postgres://aios:aios_dev_only@postgres:5432/aiemployee
+      DATABASE_ADMIN_URL: postgres://postgres:local_postgres_only@postgres:5432/aiemployee
+      REDIS_URL: redis://redis:6379
+      DEMO_MODE: "true"
+      DEMO_ORG_ID: 11111111-1111-4111-8111-111111111111
+      JWT_SECRET: local-demo-secret-change-before-production-32-bytes
+      WEB_ORIGIN: http://localhost:${AIOS_WEB_PORT:-13000}
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_FROM: service@hvac-demo.example.test
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: aios
+      MINIO_SECRET_KEY: local_minio_dev_only
+    ports: ["127.0.0.1:${AIOS_API_PORT:-14000}:4000"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      mailpit: { condition: service_started }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 4s
+      timeout: 3s
+      retries: 30
+
+  worker:
+    image: aios-worker:local
+    build: .
+    working_dir: /workspace
+    command: ["npm", "run", "dev", "--workspace", "@aios/worker"]
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgres://aios:aios_dev_only@postgres:5432/aiemployee
+      REDIS_URL: redis://redis:6379
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_FROM: service@hvac-demo.example.test
+    depends_on:
+      api: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      mailpit: { condition: service_started }
+
+  voice:
+    image: aios-voice:local
+    build: .
+    working_dir: /workspace
+    command: ["npm", "run", "dev", "--workspace", "@aios/voice"]
+    environment:
+      NODE_ENV: development
+      PORT: 4100
+      API_URL: http://api:4000
+      WEB_ORIGIN: http://localhost:${AIOS_WEB_PORT:-13000}
+      DEMO_MODE: "true"
+    ports: ["127.0.0.1:${AIOS_VOICE_PORT:-14100}:4100"]
+    depends_on:
+      api: { condition: service_healthy }
+
+  web:
+    image: aios-web:local
+    build: .
+    working_dir: /workspace
+    command: ["npm", "run", "dev", "--workspace", "@aios/web"]
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_ORIGIN: http://localhost:${AIOS_API_PORT:-14000}
+      NEXT_PUBLIC_VOICE_ORIGIN: http://localhost:${AIOS_VOICE_PORT:-14100}
+    ports: ["127.0.0.1:${AIOS_WEB_PORT:-13000}:3000"]
+    depends_on:
+      api: { condition: service_healthy }
+
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:

@@ -1,0 +1,16 @@
+{
+  "name": "@aios/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "tsx watch src/worker.ts", "build": "tsc -b", "start": "node dist/worker.js" },
+  "dependencies": {
+    "@aios/core": "0.1.0",
+    "@aios/workflows": "0.1.0",
+    "bullmq": "^5.58.5",
+    "ioredis": "^5.8.1",
+    "nodemailer": "^7.0.9",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": { "@types/node": "^24.7.0", "@types/nodemailer": "^6.4.17", "@types/pg": "^8.15.5" }
+}
