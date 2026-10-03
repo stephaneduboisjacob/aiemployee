@@ -1,0 +1,26 @@
+[Unit]
+Description=AI Employee OS web application
+After=network-online.target aios-api.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sven
+Group=sven
+WorkingDirectory=/home/sven/aiemployee
+EnvironmentFile=/home/sven/.config/ai-employee-os/production.env
+Environment=NODE_ENV=production
+Environment=PORT=33000
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start -H 127.0.0.1 -p 33000
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/log/ai-employee-os
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

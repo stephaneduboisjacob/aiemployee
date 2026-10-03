@@ -1,0 +1,25 @@
+[Unit]
+Description=AI Employee OS workflow worker
+After=network-online.target postgresql.service redis-server.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sven
+Group=sven
+WorkingDirectory=/home/sven/aiemployee
+EnvironmentFile=/home/sven/.config/ai-employee-os/production.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node apps/worker/dist/worker.js
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/log/ai-employee-os
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

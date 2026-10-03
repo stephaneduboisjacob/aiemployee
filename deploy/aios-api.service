@@ -1,0 +1,27 @@
+[Unit]
+Description=AI Employee OS API
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sven
+Group=sven
+WorkingDirectory=/home/sven/aiemployee
+EnvironmentFile=/home/sven/.config/ai-employee-os/production.env
+Environment=NODE_ENV=production
+Environment=PORT=34000
+Environment=HOST=127.0.0.1
+ExecStart=/usr/bin/node apps/api/dist/server.js
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/log/ai-employee-os
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
