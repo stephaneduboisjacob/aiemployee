@@ -127,21 +127,22 @@ Bootstrap is idempotent and refuses to continue if the domain does not resolve t
 sudo scripts/install-domain-certificate.sh
 ```
 
-The A record is assumed to point to this host; no AAAA record is currently published. Confirm both records with the DNS provider before future DNS changes. This command uses `admin@btcpay.exchange` for the ACME account, installs the certificate, enables the renewal timer, and verifies HTTPS, API health, and a targeted renewal dry-run. It serves a small setup page publicly and exposes only `/api/health`. All other app API routes return 503 while the local app uses demo authentication. It does not expose the seeded owner session.
+The A record is assumed to point to this host; no AAAA record is currently published. Confirm both records with the DNS provider before future DNS changes. This command uses `admin@btcpay.exchange` for the ACME account, installs the certificate, enables the renewal timer, adds `/etc/letsencrypt/renewal-hooks/deploy/reload-aiemployee-nginx` to reload Nginx after a successful renewal, and verifies HTTPS, API health, and a targeted renewal dry-run. Gzip and Brotli were both verified over HTTPS. It serves a small setup page publicly and exposes only `/api/health`. All other app API routes return 503 while the local app uses demo authentication. It does not expose the seeded owner session.
 
 The full systemd app proxy is `sudo scripts/provision-host.sh`. It requires `/home/sven/.config/ai-employee-os/production.env`, `DEMO_MODE=false`, a unique 32-character JWT secret, and active `aios-api`, `aios-worker`, `aios-voice`, and `aios-web` units. The production sign-in/MFA path remains incomplete, so this guard currently prevents proxying public traffic to the demo workspace. The unrelated host listeners on ports 3000 and 4000 are avoided by assigning the AIOS systemd services to 33000, 34000, and 34100.
 
-Certificate install and HTTPS checks completed on 2026-10-03. The Let's Encrypt certificate is valid through 2027-01-01 and is installed at `/etc/letsencrypt/live/aiemployee.btcpay.exchange/`. Nginx uses HTTP/2, redirects HTTP to HTTPS, and sets security headers and a 100M upload limit. A second installer run also passed without requesting another certificate.
+Certificate install and HTTPS checks completed on 2026-10-03. The Let's Encrypt certificate is valid through 2027-01-01 and is installed at `/etc/letsencrypt/live/aiemployee.btcpay.exchange/`. Nginx uses HTTP/2, redirects HTTP to HTTPS, enables gzip/Brotli, and sets security headers and a 100M upload limit. A second installer run also passed without requesting another certificate.
 
 ```text
 $ curl -sSI https://aiemployee.btcpay.exchange
 HTTP/2 200
 server: nginx
-date: Sat, 03 Oct 2026 02:25:51 GMT
+date: Sat, 03 Oct 2026 02:34:25 GMT
 content-type: text/html
 content-length: 251
-last-modified: Sat, 03 Oct 2026 02:25:43 GMT
-etag: "6ac067a7-fb"
+last-modified: Sat, 03 Oct 2026 02:34:17 GMT
+vary: Accept-Encoding
+etag: "6ac069a9-fb"
 strict-transport-security: max-age=31536000
 x-content-type-options: nosniff
 x-frame-options: DENY
@@ -187,7 +188,7 @@ $ sudo systemctl status certbot.timer --no-pager
 ● certbot.timer - Run certbot twice daily
      Loaded: loaded (/usr/lib/systemd/system/certbot.timer; enabled; preset: enabled)
      Active: active (waiting) since Mon 2026-09-07 15:28:59 UTC
-     Trigger: Sat 2026-10-03 10:43:54 UTC; 8h left
+     Trigger: Sat 2026-10-03 04:39:07 UTC; 2h 4min left
    Triggers: ● certbot.service
 ```
 

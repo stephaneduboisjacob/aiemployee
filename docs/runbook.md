@@ -10,7 +10,7 @@ Run `npm run demo` from the repo root after Compose is healthy. The script start
 
 ## Host provisioning
 
-DNS A resolves to `152.53.113.237`, matching the host's public address; no AAAA is published. The operator must confirm A/AAAA records with the DNS provider before changing them. On 2026-10-03, `scripts/install-domain-certificate.sh` installed a Let's Encrypt certificate using `admin@btcpay.exchange`, wrote `/etc/nginx/sites-available/aiemployee.btcpay.exchange`, validated and reloaded Nginx, enabled the Certbot timer, passed a renewal dry-run for this certificate, and verified public HTTP/2 plus `/api/health`. The public root serves `/var/www/aiemployee/index.html`. Nginx proxies only the health route to the local API; all other `/api/` paths return 503 while demo owner-session auth is enabled.
+DNS A resolves to `152.53.113.237`, matching the host's public address; no AAAA is published. The operator must confirm A/AAAA records with the DNS provider before changing them. On 2026-10-03, `scripts/install-domain-certificate.sh` installed a Let's Encrypt certificate using `admin@btcpay.exchange`, wrote `/etc/nginx/sites-available/aiemployee.btcpay.exchange`, enabled gzip and Brotli, validated and reloaded Nginx, enabled the Certbot timer, installed a domain-specific Nginx reload hook for renewals, passed a renewal dry-run for this certificate, and verified public HTTP/2 plus `/api/health`. The public root serves `/var/www/aiemployee/index.html`. Nginx proxies only the health route to the local API; all other `/api/` paths return 503 while demo owner-session auth is enabled.
 
 Run the idempotent certificate setup or renewal verification with:
 

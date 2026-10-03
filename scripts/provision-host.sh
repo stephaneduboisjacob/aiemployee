@@ -62,7 +62,7 @@ if ! command -v certbot >/dev/null 2>&1; then
   DEBIAN_FRONTEND=noninteractive apt-get install -y certbot
 fi
 
-if ! nginx -T 2>&1 | grep -qi ngx_http_brotli; then
+if ! nginx -T 2>&1 | grep -i ngx_http_brotli >/dev/null; then
   apt-get update
   if apt-cache show libnginx-mod-http-brotli-filter >/dev/null 2>&1; then
     DEBIAN_FRONTEND=noninteractive apt-get install -y libnginx-mod-http-brotli-filter libnginx-mod-http-brotli-static
@@ -75,7 +75,7 @@ if [[ -e "$SITE" && ! -e "${SITE}.aios-backup" ]]; then cp -a "$SITE" "${SITE}.a
 write_site() {
   local with_tls="$1"
   local brotli=""
-  if nginx -T 2>&1 | grep -qi ngx_http_brotli; then
+  if nginx -T 2>&1 | grep -i ngx_http_brotli >/dev/null; then
     brotli=$'    brotli on;\n    brotli_comp_level 5;\n    brotli_types text/plain text/css text/xml application/javascript application/json application/xml image/svg+xml;'
   fi
   if [[ "$with_tls" == yes ]]; then
