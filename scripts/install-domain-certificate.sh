@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-DOMAIN="aiemployee.btcpay.exchange"
+DOMAIN="${AIOS_DOMAIN:-aiemployee.example.com}"
 SITE="/etc/nginx/sites-available/${DOMAIN}"
 ENABLED="/etc/nginx/sites-enabled/${DOMAIN}"
 WEBROOT="/var/www/letsencrypt"
 STATUS_ROOT="/var/www/aiemployee"
 CERT_DIR="/etc/letsencrypt/live/${DOMAIN}"
 RENEWAL_HOOK="/etc/letsencrypt/renewal-hooks/deploy/reload-aiemployee-nginx"
-CERTBOT_EMAIL="${CERTBOT_EMAIL:-admin@btcpay.exchange}"
+CERTBOT_EMAIL="${CERTBOT_EMAIL:?Set CERTBOT_EMAIL to your ACME contact}"
 
 if [[ "$(id -u)" -ne 0 ]]; then
   exec sudo --preserve-env=CERTBOT_EMAIL "$0" "$@"
@@ -136,7 +136,7 @@ cat > "$RENEWAL_HOOK" <<'HOOK'
 #!/usr/bin/env bash
 set -Eeuo pipefail
 case " ${RENEWED_DOMAINS:-} " in
-  *" aiemployee.btcpay.exchange "*) ;;
+  *" aiemployee.example.com "*) ;;
   *) exit 0 ;;
 esac
 nginx -t

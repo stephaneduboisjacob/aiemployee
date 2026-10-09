@@ -300,3 +300,7 @@ Topics: answering missed calls; setting quote approval policies; managing servic
 - Keep diagrams, glyphs, logo, and dividers as SVG where possible. Give decorative images empty alt text; write descriptive alt text for meaningful HVAC photography.
 - Keep real dashboard tables, metrics, transcripts, call waveforms, and approval states live and accessible in HTML/CSS/SVG.
 - Start with the identity, role glyphs, real dashboard capture, and current empty/error states. Then build the marketing hero and feature visuals. Produce About photography, customer proof, and blog covers only when the corresponding pages and approved source material exist.
+
+---
+
+Contact: Stephane Jacob <jacobstephane@outlook.com>

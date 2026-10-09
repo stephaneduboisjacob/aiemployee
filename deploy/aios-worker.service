@@ -5,10 +5,10 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=sven
-Group=sven
-WorkingDirectory=/home/sven/aiemployee
-EnvironmentFile=/home/sven/.config/ai-employee-os/production.env
+User=aiemployee
+Group=aiemployee
+WorkingDirectory=/opt/ai-employee-os
+EnvironmentFile=/etc/ai-employee-os/production.env
 Environment=NODE_ENV=production
 ExecStart=/usr/bin/node apps/worker/dist/worker.js
 Restart=always

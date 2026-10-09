@@ -5,3 +5,7 @@ The initial pack is for residential HVAC service companies. The qualification fl
 The sample catalog includes diagnostic visits and common repair estimates. The demo quote is generated from an explicit HVAC service catalog fixture; it is not an open-ended model estimate. A quote is checked against the organization's approval policy before an email can be sent.
 
 Memory entities include contacts, residential properties, equipment, service visits, warranties, and service history. Every write includes employee/task/source/timestamp/confidence provenance. Recording retention is opt-in and subject to state-specific consent. Do not enable transcript storage until each operating jurisdiction is reviewed.
+
+---
+
+Contact: Stephane Jacob <jacobstephane@outlook.com>

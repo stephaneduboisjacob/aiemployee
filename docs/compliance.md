@@ -21,3 +21,7 @@ This document is a launch control plan, not a claim of certification.
 ## HVAC privacy notes
 
 Property access instructions and equipment identifiers may be sensitive. Collect only details needed to schedule and complete service. Do not retain card data, door codes, or unrelated household details in transcripts. State call-recording consent laws vary; obtain legal review for each service area and announce recording as required before enabling retention.
+
+---
+
+Contact: Stephane Jacob <jacobstephane@outlook.com>

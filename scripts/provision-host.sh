@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-DOMAIN="aiemployee.btcpay.exchange"
+DOMAIN="${AIOS_DOMAIN:-aiemployee.example.com}"
 SITE="/etc/nginx/sites-available/${DOMAIN}"
 ENABLED="/etc/nginx/sites-enabled/${DOMAIN}"
 WEBROOT="/var/www/letsencrypt"
 CERT_DIR="/etc/letsencrypt/live/${DOMAIN}"
-CERTBOT_EMAIL="${CERTBOT_EMAIL:-admin@btcpay.exchange}"
-PRODUCTION_CONFIG="/home/sven/.config/ai-employee-os/production.env"
+CERTBOT_EMAIL="${CERTBOT_EMAIL:?Set CERTBOT_EMAIL to your ACME contact}"
+PRODUCTION_CONFIG="${PRODUCTION_CONFIG:-/etc/ai-employee-os/production.env}"
 
 if [[ "$(id -u)" -ne 0 ]]; then
   exec sudo --preserve-env=CERTBOT_EMAIL "$0" "$@"

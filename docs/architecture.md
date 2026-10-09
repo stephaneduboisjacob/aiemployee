@@ -40,3 +40,7 @@ Docker Compose runs PostgreSQL 18 + pgvector, Redis, the Temporal dev server, an
 ## Known architecture gaps
 
 The first slice does not yet implement full user authentication/MFA, per-human RBAC, production telephony and calendar/CRM provider sync, complete company memory retrieval and redaction propagation, multi-channel approval delivery, full OTel dashboards, or Stripe usage reconciliation. These are listed in README rather than represented as working features.
+
+---
+
+Contact: Stephane Jacob <jacobstephane@outlook.com>

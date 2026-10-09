@@ -9,4 +9,6 @@ coverage/
 *.log
 demo/recordings/e2e-results/
 demo/recordings/playwright-report/
-!demo/recordings/killer-demo.trace.zip
+*.zip
+.claude/
+.codex/

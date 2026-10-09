@@ -6,3 +6,7 @@
 4. Run `FAIL_DEMO_STEP=send_quote_email npm run demo` to see a failed attempt followed by a resumed retry and audit events.
 
 The replay simulates a telephony webhook request; it does not use a PSTN connection. A Twilio account/number and signed webhook are required for a live external call. The browser recording made with Chrome 154 is `demo/recordings/killer-demo.webm`; Playwright also writes its trace and video under the ignored `demo/recordings/e2e-results/` directory when tests run.
+
+---
+
+Contact: Stephane Jacob <jacobstephane@outlook.com>
