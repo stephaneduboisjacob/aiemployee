@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">AI Employee OS — People lead. Workflows follow.</title>
+  <desc id="desc">A service-workflow hub connects HVAC intake, scheduling, and quoting with a human approval point.</desc>
+  <defs>
+    <linearGradient id="warm" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFD276"/><stop offset="1" stop-color="#F39A58"/></linearGradient>
+    <linearGradient id="cool" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#89DCFF"/><stop offset="1" stop-color="#70C5E5"/></linearGradient>
+  </defs>
+  <rect x="8" y="8" width="1184" height="304" rx="40" fill="#1B2029"/>
+  <circle cx="160" cy="160" r="112" fill="#2A3038"/>
+  <path d="M83 142 160 83l77 59v78c0 9-7 16-16 16H99c-9 0-16-7-16-16z" fill="#303943" stroke="url(#warm)" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M111 177h35v36h-35zM174 157h32v25h-32zM174 192h32v21h-32z" fill="#40515B" stroke="#A7DDF1" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M146 194h17M163 169h11M163 202h11" stroke="url(#cool)" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="116" cy="112" r="6" fill="#FFE3A6"/><circle cx="199" cy="112" r="6" fill="#FFE3A6"/>
+  <path d="M127 101c-10-11-10-23 0-34M193 101c10-11 10-23 0-34" fill="none" stroke="#7ECFEA" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+  <text x="310" y="156" fill="#F5F4EF" font-family="Inter,Arial,sans-serif" font-size="70" font-weight="750" letter-spacing="-2">AI Employee OS</text>
+  <text x="316" y="215" fill="#AEB8BE" font-family="Inter,Arial,sans-serif" font-size="27" font-weight="600" letter-spacing="3">PEOPLE LEAD. WORKFLOWS FOLLOW.</text>
+  <path d="M316 251h190" stroke="#E9B860" stroke-width="5" stroke-linecap="round"/>
+</svg>

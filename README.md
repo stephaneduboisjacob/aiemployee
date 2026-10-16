@@ -1,4 +1,8 @@
-# AI Employee OS
+# AI Employee OS — Human-Supervised HVAC Operations
+
+<p align="center">
+  <img src="assets/brand/README-logo.svg" alt="AI Employee OS — people lead, service workflows follow" width="760">
+</p>
 
 An operations platform prototype for residential HVAC service teams. It turns inbound service requests into auditable workflows for qualification, visit scheduling, quoting, and follow-up, with people approving consequential actions.
 
@@ -49,7 +53,7 @@ Useful commands include `npm run build`, `npm run typecheck`, `npm run lint`, `n
 
 ## License
 
-No license has been selected yet. Public visibility does not grant permission to reuse the code.
+This source-available project is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE). Noncommercial use is permitted under its terms; commercial use requires separate written permission.
 
 ## Contact
 
